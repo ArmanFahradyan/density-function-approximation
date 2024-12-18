@@ -37,6 +37,13 @@ def cosine_similarity(f: callable, g: callable, a: float, b: float):
     return quad(lambda x: f(x)*g(x), a, b)[0] / norm_f / norm_g
 
 
+def compute_all_metrics(f: callable, g: callable, a: float, b: float):
+    print("L1 distance:", L1_distance(f, g, a, b))
+    print("L2 distance:", L2_distance(f, g, a, b))
+    print("L_inf distance:", L_inf_distance(f, g, a, b))
+    print("Cosine similarity:", cosine_similarity(f, g, a, b))
+
+
 def test():
     f = lambda x: np.cos(x)
     g = lambda x: np.sin(x)
@@ -46,4 +53,7 @@ def test():
     print(L_inf_distance(f, g, 0, np.pi))
     print(cosine_similarity(f, g, 0, np.pi))
 
-test()
+
+if __name__ == "__main__":
+    test()
+
