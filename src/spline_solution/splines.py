@@ -1,6 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import interpolate
+import scipy.stats as stats
+from scipy.interpolate import interp1d
+
+def normalize_pdf(pdf, x_fine):
+    area = np.trapz(pdf, x_fine)
+    return pdf / area
+
+def make_data_normal():
+    return np.random.normal(0, 1, 1000), lambda x: (1 / np.sqrt(2 * np.pi)) * np.exp(-x**2 / 2)
+
 
 def cubic_spline(x, y):
     n = len(x)
@@ -81,75 +91,30 @@ def linear_spline(x, y):
     
     return linear_interpolation
 
-def create_splines(data: np.ndarray, x_fine: np.ndarray, name=str):
-    data_sorted = np.sort(data)
+def create_splines(data: np.ndarray, x_fine: np.ndarray, x:np.ndarray, name=str):
     
-    n = len(data_sorted)
-    x = np.arange(n)
+    n = len(data)
     
     if name == "Cubic":    
-        return evaluate_cubic_spline(x_fine, x, data_sorted)
+        return evaluate_cubic_spline(x_fine, x, data)
          
     elif name == "Quadratic":    
-        return evaluate_quadratic_spline(x_fine, x, data_sorted)
+        return evaluate_quadratic_spline(x_fine, x, data)
 
     elif name == "Linear":    
-        linear_spline_func = linear_spline(x, data_sorted)
+        linear_spline_func = linear_spline(x, data)
         return linear_spline_func(x_fine)
     else:
         return "Invalid Spline Type"
     
 def get_splines_from_data(data: np.ndarray, name: str):
+
+    hist, bin_edges = np.histogram(data, bins=10, density=True)
+    bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
-    n = len(data)
-    x_fine = np.linspace(0, n-1, 1000)
+    x_fine = np.linspace(min(bin_edges), max(bin_edges), 100)
 
-    return create_splines(data,x_fine, name)
-
-def plot_spline(data):
-    data_sorted = np.sort(data)
-
-    n = len(data)
-    x_fine = np.linspace(0, n-1, 1000)
-
-    xnew = np.arange(len(data))
-    tck = interpolate.splrep(xnew, data, s=0)
-    ynew = interpolate.splev(x_fine, tck, der=0)
-
-    fig, axs = plt.subplots(1, 4, figsize=(18, 6))
-
-    # Cubic Spline Plot
-    axs[0].plot(x_fine, get_splines_from_data(data, "Cubic"), label="Cubic Spline", color='blue')
-    axs[0].scatter(np.arange(n), data_sorted, color='black', label="Original Data", alpha=0.5)
-    axs[0].set_title("Cubic Spline Fit")
-    axs[0].legend()
-
-    # Quadratic Spline Plot
-    axs[1].plot(x_fine, get_splines_from_data(data, "Quadratic"), label="Quadratic Spline", color='green')
-    axs[1].scatter(np.arange(n), data_sorted, color='black', label="Original Data", alpha=0.5)
-    axs[1].set_title("Quadratic Spline Fit")
-    axs[1].legend()
-
-    # Linear Spline Plot
-    axs[2].plot(x_fine, get_splines_from_data(data, "Linear"), label="Linear Spline", color='red')
-    axs[2].scatter(np.arange(n), data_sorted, color='black', label="Original Data", alpha=0.5)
-    axs[2].set_title("Linear Spline Fit")
-    axs[2].legend()
-
-    axs[3].plot(x_fine, ynew, label="scypy Spline", color='red')
-    axs[3].scatter(np.arange(n), data_sorted, color='black', label="Original Data", alpha=0.5)
-    axs[3].set_title("Linear Spline Fit")
-    axs[3].legend()
-
-
-    plt.tight_layout()
-    plt.savefig("spline_fits.png")
-
-    plt.show()
-
-    return None
-
-data = np.random.normal(0, 1, 400)  
-pdf_linear = get_splines_from_data(data, "Cubic")
-
-plot_spline(data)
+    pdf_linear = create_splines(hist, name, x_fine, bin_centers)
+    normalized_pdf = normalize_pdf(pdf_linear, x_fine)
+    
+    return normalized_pdf
