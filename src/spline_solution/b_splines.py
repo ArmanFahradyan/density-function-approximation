@@ -14,6 +14,9 @@ def basis_function(t, i, k, x):
 
 def spline_fit(x, y, degree=3):
     """Fit a B-spline manually to data."""
+    x = np.array(x)
+    if not x.shape:
+        x = x.reshape(-1)
     n = len(x)
     t = np.concatenate((np.repeat(x[0], degree), x, np.repeat(x[-1], degree))) 
     m = len(t) - degree - 1 
@@ -28,6 +31,9 @@ def spline_fit(x, y, degree=3):
 
 def evaluate_spline(t, coeffs, degree, x_new):
     """Evaluate a fitted B-spline at new points."""
+    x_new = np.array(x_new)
+    if not x_new.shape:
+        x_new = x_new.reshape(-1)
     n = len(x_new)
     m = len(coeffs)
     y_new = np.zeros(n)

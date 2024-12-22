@@ -35,37 +35,16 @@ The script accepts the following input variables:
        - `"Cubic"`, `"B-Spline"`.
      - **Degree**: For B-Splines, specify the degree (integer value).
    - For **NN**:
-     - **Approach**: Choose the type of neural network approach (currently, the default is `"Classic"`).
-
-3. **`density_function`**: Defines the type of density function to approximate. Options include:
-   - `"normal"`, `"uniform"`, `"gamma"`, and others (custom distributions can also be specified).
+     - **Approach**: For now, the method is fixed.
 
 ## Example Usage
 
 Once the repository is set up, you can run the application with different configurations. Below are a few examples:
 
-### Example 1: Using Splines for Uniform Distribution
-
-To approximate the density function of a **uniform distribution** using **B-Splines** (degree 3), run the following command:
+### Example: 
 
 ```bash
-python main.py --method Splines --approach B-Spline --degree 3 --density_function uniform
-```
-
-### Example 2: Using KDE for Normal Distribution
-
-To approximate the density function of a **normal distribution** using **KDE** with the **Gaussian kernel** and **Silverman bandwidth algorithm**, run:
-
-```bash
-python main.py --method KDE --approach classic --density_function normal --kernel Gaussian --bandwidth Silverman
-```
-
-### Example 3: Using Neural Networks for Gamma Distribution
-
-To approximate the density function of a **gamma distribution** using a **classic neural network** approach:
-
-```bash
-python main.py --method NN --approach classic --density_function gamma
+python -m src.main
 ```
 
 ## Requirements

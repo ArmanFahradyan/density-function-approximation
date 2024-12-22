@@ -24,11 +24,7 @@ def criterion_ascending(nn_outputs_1, nn_outputs_2):
 
 
 def criterion(outputs, labels, nn_outputs_1, nn_outputs_2, lambda_):
-    return nn.MSELoss()(outputs, labels) + lambda_ * criterion_ascending(nn_outputs_1, nn_outputs_2)
-
-
-def criterion_ks(outputs, labels, nn_outputs_1, nn_outputs_2, lambda_):
-    pass
+    return nn.MSELoss()(outputs, labels)  # + lambda_ * criterion_ascending(nn_outputs_1, nn_outputs_2)
 
 
 class CorrelationLoss(nn.Module):

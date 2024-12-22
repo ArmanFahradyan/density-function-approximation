@@ -2,8 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
+
 def cubic_spline_interpolation(x, y):
     """ Perform cubic spline interpolation on data (x, y) """
+    x = np.array(x)
+    if not x.shape:
+        x = x.reshape(-1)
     
     n = len(x)
     
@@ -39,8 +43,16 @@ def cubic_spline_interpolation(x, y):
     
     return a, b, c, d, x, h
 
+
 def evaluate_cubic_spline(a, b, c, d, x, h, x_new):
     """ Evaluate the cubic spline at new points x_new """
+    x = np.array(x)
+    if not x.shape:
+        x = x.reshape(-1)
+    x_new = np.array(x_new)
+    if not x_new.shape:
+        x_new = x_new.reshape(-1)
+
     n = len(x)
     y_new = np.zeros_like(x_new)
 
@@ -53,7 +65,8 @@ def evaluate_cubic_spline(a, b, c, d, x, h, x_new):
     
     return y_new
 
-def get_cubic_pdf(data: np.ndarray, degree: int):
+
+def get_cubic_pdf(data: np.ndarray):
     data_sorted = np.sort(data)
 
     hist, bin_edges = np.histogram(data_sorted, bins=5, density=True)
