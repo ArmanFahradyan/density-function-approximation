@@ -37,16 +37,20 @@ def evaluate_spline(t, coeffs, degree, x_new):
     
     return y_new
 
-def get_pdf_splines(data: np.ndarray, degree: int):
-    """Estimate the empirical PDF from the data and smooth it using B-splines."""
-    data_sorted = np.sort(data)
+def get_splines(data: np.ndarray, degree: int):
+        """Estimate the empirical PDF from the data and smooth it using B-splines."""
+        data_sorted = np.sort(data)
 
-    hist, bin_edges = np.histogram(data_sorted, bins=5, density=True)
-    bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2  
+        hist, bin_edges = np.histogram(data_sorted, bins=5, density=True)
+        bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2  
 
-    t, coeffs = spline_fit(bin_centers, hist, degree)
+        t, coeffs = spline_fit(bin_centers, hist, degree)
+        
+        def get_pdf(x_new):
+            return evaluate_spline(t, coeffs, degree, x_new)
+        
+        return  get_pdf
+
+
+
     
-    x_new = np.linspace(min(bin_centers), max(bin_centers), 1000) 
-    y_new = evaluate_spline(t, coeffs, degree, x_new)
-    
-    return  y_new
