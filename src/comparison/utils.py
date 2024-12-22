@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.integrate import simps
 from scipy.integrate import quad
 
 
