@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from scipy.integrate import simps
 from scipy.integrate import quad
 
 
