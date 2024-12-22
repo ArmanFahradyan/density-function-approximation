@@ -27,6 +27,9 @@ def spline_fit(x, y, degree=3):
 
 def evaluate_spline(t, coeffs, degree, x_new):
     """Evaluate a fitted B-spline at new points."""
+    x_new = np.array(x_new)
+    if not x_new.shape:
+        x_new = x_new.reshape(-1)
     n = len(x_new)
     m = len(coeffs)
     y_new = np.zeros(n)

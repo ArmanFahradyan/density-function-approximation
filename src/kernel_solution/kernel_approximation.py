@@ -59,6 +59,8 @@ def bw_mlcv(data, k):
 # Kernel Density Estimation
 def kde(data, h, k, x):
     x = np.array(x)
+    if not x.shape:
+        x = x.reshape(-1)
     u = (x[:, np.newaxis] - data) / h
     kde_values = np.mean(k(u), axis=1) / h
     return kde_values
