@@ -49,4 +49,4 @@ def get_pdf_splines(data: np.ndarray, degree: int):
     x_new = np.linspace(min(bin_centers), max(bin_centers), 1000) 
     y_new = evaluate_spline(t, coeffs, degree, x_new)
     
-    return x_new, y_new
+    return  y_new
