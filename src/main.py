@@ -15,15 +15,16 @@ def main():
 
     data_count = 200
 
-    distributions = ["normal", "uniform", "exponential", "gamma", "chi_2"]
+    distributions = ["normal", "two_normal", "uniform", "exponential", "chi_2"]
     distributions_dict = {"normal": "Gaussian(0, 1)",
+                          "two_normal": "0.75*N(0, 1)+0.25*N(5, 1)",
                           "uniform": "Uniform(0, 5)",
                           "exponential": "Exp(1)",
-                          "gamma": "Gamma(0.5, 0.5)",
                           "chi_2": "Chi^2(5)"}
+
     kernels = ["gaussian", "epanechnikov", "cosine", "linear"]
     bw_methods = ["Silverman", "MLCV"]
-    spline_methods = [1, 2, 3]
+    spline_methods = ["B-Spline_1", "B-Spline_2", "B-Spline_3"]
 
     fig, axes = plt.subplots(len(distributions), 1+8+3, figsize=(80, 64))
 
